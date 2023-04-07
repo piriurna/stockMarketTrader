@@ -30,6 +30,7 @@ class AlphaVantageApi(BaseApiRequest):
             'symbol': symbol,
             'outputsize': OUTPUT_SIZE,
         }
+        print(self.base_url + ' ' + str(params))
         json_data = self.get('', params)
         stock_data = json_data['Time Series (Daily)']
         return _process_stock_data(stock_data)
