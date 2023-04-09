@@ -22,6 +22,7 @@ def bollinger_bands(data, window_size, num_std_dev):
 
 # Function to calculate the Relative Strength Index (RSI)
 def relative_strength_index(data, window_size):
+    data = data.dropna()  # Add this line to drop all 'None' values
     delta = data.diff()
     gains = delta.where(delta > 0, 0)
     losses = -delta.where(delta < 0, 0)
@@ -40,4 +41,19 @@ def calculate_standard_deviation(data):
 # Function to calculate Value at Risk (VaR) using historical simulation
 def value_at_risk(data, confidence_level):
     returns = data.pct_change().dropna()
+
+    if returns.empty:  # Add this check to see if the returns array is empty
+        return np.nan  # Return np.nan if the returns array is empty
+
     return -np.percentile(returns, 100 * (1 - confidence_level))
+
+
+def moving_average_convergence_divergence(data, fast_period, slow_period):
+    return exponential_moving_average(data, fast_period) - exponential_moving_average(data, slow_period)
+
+
+def moving_average_convergence_divergence_new(data, fast_period, slow_period, signal_period):
+    macd_line = exponential_moving_average(data, fast_period) - exponential_moving_average(data, slow_period)
+    signal_line = exponential_moving_average(macd_line, signal_period)
+    histogram = macd_line - signal_line
+    return macd_line, signal_line, histogram

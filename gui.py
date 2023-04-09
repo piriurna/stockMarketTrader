@@ -17,18 +17,19 @@ def main():
     raw_data_csv_file = os.path.join("data", f"{stock_symbol}_raw.csv")
     stock_data.to_csv(raw_data_csv_file)
 
-    analyzed_data, figures = analyze_stock_data(stock_data)
+    analyzed_data, figures = analyze_stock_data(stock_data, symbol=stock_symbol)
 
-    def refresh_callback(symbol):
+    def refresh_callback(symbols):
+        symbol = symbols[0]
         new_stock_data = api.fetch_stock_data(symbol)
-        _, new_figures = analyze_stock_data(new_stock_data)
+        _, new_figures = analyze_stock_data(new_stock_data, symbol=stock_symbol)
 
         # Save the raw stock data to a CSV file
         new_stock_data.to_csv(os.path.join("data", f"{symbol.upper()}_raw.csv"))
 
         return new_figures
 
-    main_window = MainWindow(figures, refresh_callback)
+    main_window = MainWindow(figures, refresh_callback, [stock_symbol])
     app = QApplication(sys.argv)
     main_window.show()
     sys.exit(app.exec())

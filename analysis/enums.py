@@ -5,3 +5,15 @@ from enum import Enum
 class MovingAverageType(Enum):
     SMA = "SMA"
     EMA = "EMA"
+
+
+class Indicators(Enum):
+    PRICE = "Price"
+    RETURNS = "Returns"
+    SMA = "SMA"
+    EMA = "EMA"
+    BB = "BB"
+    RSI = "RSI"
+    STD_DEV = "STD_DEV"
+    VAR = "VAR"
+    MACD = "MACD"
